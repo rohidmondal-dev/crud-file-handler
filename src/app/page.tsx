@@ -1,3 +1,4 @@
+import ProfileCard from "@/components/ProfileCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,11 +8,11 @@ export const metadata: Metadata = {
 
 const page = () => {
 	return (
-		<section className="grid h-[90dvh] place-items-center">
-			<div className="space-y-2 text-center">
-				<h1 className="text-5xl font-semibold">Nextjs Starter Frontend</h1>
-				<h2 className="text-3xl">Production grade Next.js starter template</h2>
-			</div>
+		<section className="grid grid-cols-2 place-items-center gap-8">
+			<ProfileCard />
+			<ProfileCard />
+			<ProfileCard />
+			<ProfileCard />
 		</section>
 	);
 };
