@@ -7,11 +7,25 @@ const ProfileCard = () => {
 			<Card className="py-0">
 				<CardHeader className="h-32 w-md rounded-xl bg-[url(/cover.jpg)] bg-cover bg-center bg-no-repeat"></CardHeader>
 
-				<CardContent></CardContent>
+				<CardContent>
+					<div className="grid grid-cols-4 gap-5">
+						<div className="rounded-full bg-[url(/profile.jpg)] bg-cover bg-center bg-no-repeat"></div>
+						<div className="grid gap-3 text-2xl">
+							<div className="">Rohid Mondal</div>
+							<div className="">mondalrohid193@gmail.com</div>
+							<div className="">
+								<div className="">Kolkata,India</div>
+								<div className="">Contact:7679886986</div>
+							</div>
+						</div>
+					</div>
+				</CardContent>
 
 				<CardFooter>
-					<Button>Delete</Button>
-					<Button>Edit</Button>
+					<div className="grid w-full grid-cols-2 gap-3 pb-1">
+						<Button className="bg-red-600">Delete</Button>
+						<Button className="bg-green-600">Edit</Button>
+					</div>
 				</CardFooter>
 			</Card>
 		</>
