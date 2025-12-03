@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
 	cacheComponents: true,
 	reactCompiler: true,
 	typedRoutes: true,
+	images: {
+		remotePatterns: [new URL("https://placehold.co/**")],
+		dangerouslyAllowSVG: true,
+	},
 };
 
 export default nextConfig;
