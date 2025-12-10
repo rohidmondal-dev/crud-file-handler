@@ -14,10 +14,24 @@ import { Field, FieldError, FieldLabel } from "./shadcnui/field";
 import { Input } from "./shadcnui/input";
 
 const ProfileCreateForm = () => {
-	const [isProfileFile, setIsProfileFile] = useState(false);
 	const [isCoverFile, setIsCoverFile] = useState(false);
+	const [isProfileFile, setIsProfileFile] = useState(false);
 
-	const { openFilePicker, filesContent, plainFiles } = useFilePicker({
+	const coverPicker = useFilePicker({
+		readAs: "DataURL",
+		accept: "image/*",
+		multiple: false,
+		validators: [
+			new FileSizeValidator({
+				maxFileSize: 5 * 1024 * 1024,
+			}),
+		],
+
+		onFilesSuccessfullySelected: () => setIsCoverFile(true),
+		onClear: () => setIsCoverFile(false),
+	});
+
+	const profilePicker = useFilePicker({
 		readAs: "DataURL",
 		accept: "image/*",
 		multiple: false,
@@ -35,6 +49,7 @@ const ProfileCreateForm = () => {
 		handleSubmit,
 		control,
 		formState: { isSubmitting },
+		reset,
 	} = useForm({
 		resolver: zodResolver(createSchema),
 		defaultValues: {
@@ -49,47 +64,97 @@ const ProfileCreateForm = () => {
 	const cFormHandler = async (fData: CreateType) => {
 		await new Promise((r) => setTimeout(r, 1500));
 
+		console.log(coverPicker.plainFiles[0]);
+
+		console.log(profilePicker.plainFiles[0]);
+
 		console.log(fData);
 	};
+
+	const resetHandler = () => {
+		setIsCoverFile(false);
+		coverPicker.clear();
+
+		setIsProfileFile(false);
+		profilePicker.clear();
+
+		reset();
+	};
+
 	return (
 		<>
-			<div className="grid gap-4">
-				{!isProfileFile && (
+			<div className="mb-4 grid gap-4">
+				{!isCoverFile && (
 					<Image
-						src={"https://placehold.co/1920x1080"}
-						alt="Avatar Image"
-						width={640}
-						height={360}
-						className="aspect-video h-[360px] w-[640px] rounded-sm object-cover"
+						src={"https://placehold.co/512x128"}
+						alt="Cover Image"
+						width={512}
+						height={128}
+						className="h-32 w-lg rounded-sm object-cover"
 					/>
 				)}
 
-				{filesContent.map((file, idx) => (
+				{coverPicker.filesContent.map((file, idx) => (
 					<Image
 						key={idx}
 						src={file.content}
 						alt={file.name}
-						width={640}
-						height={360}
-						className="aspect-square h-[360px] w-[640px] rounded-sm object-cover"
+						width={512}
+						height={128}
+						className="h-32 w-lg rounded-sm object-cover"
 					/>
 				))}
+
+				{!isCoverFile && (
+					<Button
+						className="cursor-pointer"
+						variant={"outline"}
+						onClick={coverPicker.openFilePicker}>
+						<ImagesIcon />
+						Choose Cover
+					</Button>
+				)}
 			</div>
 
-			<div className="mt-4 grid grid-cols-1 gap-4">
-				<Button
-					className="cursor-pointer"
-					variant={"outline"}
-					onClick={openFilePicker}>
-					<ImagesIcon />
-					Choose Image
-				</Button>
+			<div className="mb-4 grid gap-4">
+				<div className="grid place-items-center">
+					{!isProfileFile && (
+						<Image
+							src={"https://placehold.co/160x160"}
+							alt="Profile Image"
+							width={160}
+							height={160}
+							className="h-40 w-40 rounded-sm object-cover"
+						/>
+					)}
+
+					{profilePicker.filesContent.map((file, idx) => (
+						<Image
+							key={idx}
+							src={file.content}
+							alt={file.name}
+							width={160}
+							height={160}
+							className="h-40 w-40 rounded-sm object-cover"
+						/>
+					))}
+				</div>
+
+				{!isProfileFile && (
+					<Button
+						className="cursor-pointer"
+						variant={"outline"}
+						onClick={profilePicker.openFilePicker}>
+						<ImagesIcon />
+						Choose Profile
+					</Button>
+				)}
 			</div>
 
 			<form
 				id="user-form"
 				onSubmit={handleSubmit(cFormHandler)}
-				className="grid w-xs gap-4"
+				className="grid gap-4"
 				noValidate>
 				{/* Full Name Field */}
 				<Controller
@@ -173,21 +238,32 @@ const ProfileCreateForm = () => {
 					)}
 				/>
 
-				{/* Submit Button */}
-				<Button
-					type="submit"
-					className="cursor-pointer"
-					disabled={isSubmitting}>
-					{isSubmitting ? (
-						<>
-							<LoaderIcon className="animate-spin" /> Submitting...
-						</>
-					) : (
-						<>
-							<SendIcon /> Submit
-						</>
-					)}
-				</Button>
+				<div className="grid grid-cols-2 gap-8">
+					{/* Reset Button */}
+					<Button
+						type="reset"
+						onClick={resetHandler}
+						variant={"destructive"}
+						className="cursor-pointer">
+						Reset
+					</Button>
+
+					{/* Submit Button */}
+					<Button
+						type="submit"
+						className="cursor-pointer"
+						disabled={!isCoverFile || !isProfileFile || isSubmitting}>
+						{isSubmitting ? (
+							<>
+								<LoaderIcon className="animate-spin" /> Submitting...
+							</>
+						) : (
+							<>
+								<SendIcon /> Submit
+							</>
+						)}
+					</Button>
+				</div>
 			</form>
 		</>
 	);
