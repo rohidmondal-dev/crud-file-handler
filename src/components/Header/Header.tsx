@@ -1,3 +1,4 @@
+import { LayoutDashboardIcon, PlusSquareIcon } from "lucide-react";
 import Link from "next/link";
 import ThemeToggleButton from "../ThemeToggleButton";
 
@@ -16,7 +17,16 @@ const Header = () => {
 				</Link>
 
 				<nav className="flex items-center gap-4">
-					<Link href={"/"}>Home</Link>
+					<Link
+						href={"/"}
+						className="flex items-center gap-2">
+						<LayoutDashboardIcon /> List
+					</Link>
+					<Link
+						href={"/create"}
+						className="flex items-center gap-2">
+						<PlusSquareIcon /> Create
+					</Link>
 
 					<ThemeToggleButton />
 				</nav>
