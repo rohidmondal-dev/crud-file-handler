@@ -1,0 +1,22 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  runtime  = "nodejs"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Profile {
+  id           String @id @default(uuid())
+  name         String
+  email        String
+  address      String
+  contact      Int
+  profileImage String
+  coverImage   String
+}
