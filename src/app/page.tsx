@@ -2,8 +2,8 @@ import ProfileCard from "@/components/ProfileCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Nextjs Starter Frontend",
-	description: "Production grade Next.js starter template",
+	title: "Crud File App",
+	description: "Home page of Crud File App",
 };
 
 const page = () => {
