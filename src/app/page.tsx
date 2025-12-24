@@ -1,4 +1,5 @@
 import ProfileCard from "@/components/ProfileCard";
+import prisma from "@/lib/database/dbClient";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,13 +7,14 @@ export const metadata: Metadata = {
 	description: "Home page of Crud File App",
 };
 
-const page = () => {
+const page = async () => {
+	const allProfiles = await prisma.profile.findMany();
+
 	return (
 		<section className="grid grid-cols-2 place-items-center gap-8 pt-14 pb-7">
-			<ProfileCard />
-			<ProfileCard />
-			<ProfileCard />
-			<ProfileCard />
+			{allProfiles.map((item) => (
+				<ProfileCard key={item.id} />
+			))}
 		</section>
 	);
 };
