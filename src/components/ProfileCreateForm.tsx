@@ -2,6 +2,7 @@
 
 import { CreateType } from "@/lib/type";
 import { createSchema } from "@/lib/zodSchema";
+import profileCreateAction from "@/server/profileCreateAction";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImagesIcon, LoaderIcon, SendIcon } from "lucide-react";
 import Image from "next/image";
@@ -69,6 +70,8 @@ const ProfileCreateForm = () => {
 		console.log(profilePicker.plainFiles[0]);
 
 		console.log(fData);
+
+		profileCreateAction();
 	};
 
 	const resetHandler = () => {
